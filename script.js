@@ -1,45 +1,29 @@
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
-const colorPicker = document.getElementById('colorPicker');
-const clearButton = document.getElementById('clearButton');
-let painting = false;
+document.addEventListener('DOMContentLoaded', function() {
+    const registerBtn = document.getElementById('registerBtn');
+    const resultPopup = document.getElementById('resultPopup');
+    const closePopup = document.getElementById('closePopup');
+    const resultMessage = document.getElementById('resultMessage');
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight - 60; // Отнимаем высоту контролов
+    registerBtn.addEventListener('click', function() {
+        fetch('/register_users')
+            .then(response => response.json())
+            .then(data => {
+                resultMessage.textContent = `Результат: ${JSON.stringify(data)}`;
+                resultPopup.style.display = 'block';
+            })
+            .catch(error => {
+                resultMessage.textContent = `Ошибка: ${error}`;
+                resultPopup.style.display = 'block';
+            });
+    });
 
-function startPosition(e) {
-    painting = true;
-    draw(e);
-}
+    closePopup.addEventListener('click', function() {
+        resultPopup.style.display = 'none';
+    });
 
-function endPosition() {
-    painting = false;
-    ctx.beginPath(); // Сбрасываем путь
-}
-
-function draw(e) {
-    if (!painting) return;
-
-    ctx.lineWidth = 5;
-    ctx.lineCap = 'round';
-    ctx.strokeStyle = colorPicker.value;
-
-    ctx.lineTo(e.clientX, e.clientY);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(e.clientX, e.clientY);
-}
-
-canvas.addEventListener('mousedown', startPosition);
-canvas.addEventListener('mouseup', endPosition);
-canvas.addEventListener('mousemove', draw);
-
-clearButton.addEventListener('click', () => {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-});
-
-// Обработаем изменение размера окна
-window.addEventListener('resize', () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight - 60;
+    window.addEventListener('click', function(event) {
+        if (event.target == resultPopup) {
+            resultPopup.style.display = 'none';
+        }
+    });
 });

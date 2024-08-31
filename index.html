@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Рисовалка</title>
+    <title>VK Mini App</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
 </head>
 <body>
-    <script>vkBridge.send('VKWebAppInit');</script>
-    <div class="container">
-        <canvas id="canvas"></canvas>
-        <div class="controls">
-            <input type="color" id="colorPicker" value="#000000">
-            <button id="clearButton">Очистить</button>
+<div id="app">
+    <h1>VK Mini App</h1>
+    <button id="registerBtn">Зарегистрировать пользователя</button>
+    <div id="resultPopup" class="popup">
+        <div class="popup-content">
+            <span id="closePopup" class="close">&times;</span>
+            <p id="resultMessage">Загрузка...</p>
         </div>
     </div>
-    <script src="script.js"></script>
+</div>
+<script src="script.js"></script>
 </body>
 </html>
